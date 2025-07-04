@@ -25,6 +25,7 @@ public class CustomerHandler {
     public Mono<ServerResponse> findCustomerById(ServerRequest serverRequest){
         int id = Integer.valueOf(serverRequest.pathVariable("id"));
         //customerDao.findAllList().filter(c -> c.getId() == id).take(1).single();
+        //Response
         Mono<CustomerDto> next = customerDao.findAllList().filter(c -> c.getId() == id).next();
 
         return ServerResponse.ok().body(next, CustomerDto.class);
@@ -32,7 +33,9 @@ public class CustomerHandler {
         }
 
         public Mono<ServerResponse> saveCustomer(ServerRequest serverRequest){
-            Mono<CustomerDto> customer= serverRequest.bodyToMono(CustomerDto.class);
+            Mono<CustomerDto> customer= serverRequest.bodyToMono(CustomerDto.class); //save
+
+            //Response
             Mono<String> map = customer.map(dto -> dto.getId() + " " + dto.getFirstName() + " " + dto.getLastName());
             return ServerResponse.ok().body(map, CustomerDto.class);
         }
